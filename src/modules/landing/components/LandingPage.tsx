@@ -95,6 +95,12 @@ export function LandingPage() {
               {session && (
                 <>
                   <Link
+                    href="/retirement"
+                    className="text-sm text-white/70 hover:text-white transition-colors"
+                  >
+                    Retirement Planner
+                  </Link>
+                  <Link
                     href="/account"
                     className="text-sm text-white/70 hover:text-white transition-colors"
                   >
@@ -205,15 +211,13 @@ export function LandingPage() {
                 </Button>
               </div>
             ) : (
-              <div className="flex gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" asChild>
-                  <Link href="/account">Go to Dashboard</Link>
+                  <Link href="/retirement">Retirement Planner</Link>
                 </Button>
-                {!isPro && (
-                  <Button size="lg" variant="secondary" asChild>
-                    <Link href="/billing">Upgrade to Pro</Link>
-                  </Button>
-                )}
+                <Button size="lg" variant="secondary" asChild>
+                  <Link href="/account">Dashboard</Link>
+                </Button>
               </div>
             )}
           </motion.div>

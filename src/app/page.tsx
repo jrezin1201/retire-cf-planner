@@ -1,11 +1,9 @@
 /**
- * Landing Page Route
- *
- * Entry point for the landing module following Vertical Slice Architecture
+ * Homepage - Retirement Planner Demo
  */
 
-import { LandingPage } from "@/modules/landing";
+import { RetirementDemo } from "@/modules/retirement/components/RetirementDemo";
 
 export default function Page() {
-  return <LandingPage />;
+  return <RetirementDemo />;
 }

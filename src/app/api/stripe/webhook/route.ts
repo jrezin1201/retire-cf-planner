@@ -141,27 +141,27 @@ export async function POST(req: NextRequest) {
         console.log("👤 User found via:", lookupMethod);
         console.log("   User ID:", user.id);
         console.log("   Email:", user.email);
-        console.log("   Current isPro:", user.isPro);
+        console.log("   Current plan:", user.plan);
 
         // Check if already Pro (idempotency)
-        if (user.isPro) {
-          console.log("ℹ️ User is already Pro, skipping update");
-          logger.info("User already Pro, skipping", { userId: user.id });
+        if (user.plan === "PAID") {
+          console.log("ℹ️ User is already on PAID plan, skipping update");
+          logger.info("User already PAID, skipping", { userId: user.id });
           return NextResponse.json({ received: true, alreadyPro: true });
         }
 
-        // Update user to Pro
-        console.log("💎 Upgrading user to Pro...");
+        // Update user to PAID plan
+        console.log("💎 Upgrading user to PAID plan...");
         const updatedUser = await prisma.user.update({
           where: { id: user.id },
           data: {
-            isPro: true,
+            plan: "PAID",
             stripeCustomerId: session.customer as string,
           },
         });
 
         console.log("✅ User upgraded successfully!");
-        console.log("   isPro:", updatedUser.isPro);
+        console.log("   plan:", updatedUser.plan);
         console.log("   stripeCustomerId:", updatedUser.stripeCustomerId);
 
         logger.info("User upgraded to Pro", {
@@ -239,16 +239,16 @@ export async function POST(req: NextRequest) {
 
         console.log("👤 Found user:", user.email);
 
-        // Upgrade to Pro if not already
-        if (!user.isPro) {
-          console.log("💎 Upgrading user to Pro...");
+        // Upgrade to PAID if not already
+        if (user.plan !== "PAID") {
+          console.log("💎 Upgrading user to PAID plan...");
           await prisma.user.update({
             where: { id: user.id },
-            data: { isPro: true },
+            data: { plan: "PAID" },
           });
           console.log("✅ User upgraded");
         } else {
-          console.log("ℹ️ User already Pro");
+          console.log("ℹ️ User already on PAID plan");
         }
 
         break;
@@ -282,16 +282,16 @@ export async function POST(req: NextRequest) {
 
         console.log("👤 Found user:", user.email);
 
-        // Ensure Pro status
-        if (!user.isPro) {
-          console.log("💎 Activating Pro (from renewal)...");
+        // Ensure PAID status
+        if (user.plan !== "PAID") {
+          console.log("💎 Activating PAID plan (from renewal)...");
           await prisma.user.update({
             where: { id: user.id },
-            data: { isPro: true },
+            data: { plan: "PAID" },
           });
-          console.log("✅ Pro activated");
+          console.log("✅ PAID plan activated");
         } else {
-          console.log("ℹ️ Pro already active");
+          console.log("ℹ️ PAID plan already active");
         }
 
         break;
@@ -314,16 +314,17 @@ export async function POST(req: NextRequest) {
           return NextResponse.json({ received: true });
         }
 
-        // Update Pro status based on subscription state
-        const shouldBePro = subscription.status === "active" || subscription.status === "trialing";
+        // Update plan status based on subscription state
+        const shouldBePaid = subscription.status === "active" || subscription.status === "trialing";
+        const targetPlan = shouldBePaid ? "PAID" : "FREE";
 
-        if (user.isPro !== shouldBePro) {
-          console.log(`💎 Updating Pro status to: ${shouldBePro}`);
+        if (user.plan !== targetPlan) {
+          console.log(`💎 Updating plan to: ${targetPlan}`);
           await prisma.user.update({
             where: { id: user.id },
-            data: { isPro: shouldBePro },
+            data: { plan: targetPlan },
           });
-          console.log("✅ Pro status updated");
+          console.log("✅ Plan updated");
         }
 
         break;
@@ -340,13 +341,13 @@ export async function POST(req: NextRequest) {
           where: { stripeCustomerId: subscription.customer as string },
         });
 
-        if (user && user.isPro) {
-          console.log("💔 Removing Pro status...");
+        if (user && user.plan === "PAID") {
+          console.log("💔 Downgrading to FREE plan...");
           await prisma.user.update({
             where: { id: user.id },
-            data: { isPro: false },
+            data: { plan: "FREE" },
           });
-          console.log("✅ Pro status removed");
+          console.log("✅ Downgraded to FREE plan");
         }
 
         break;

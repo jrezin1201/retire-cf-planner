@@ -40,7 +40,8 @@ export const authOptions = {
     async session({ session, user }: any) {
       if (session?.user) {
         session.user.id = user.id;
-        session.user.isPro = user.isPro ?? false;
+        session.user.plan = user.plan ?? "FREE";
+        session.user.isPro = user.plan === "PAID"; // Backwards compatibility
       }
       return session;
     },
