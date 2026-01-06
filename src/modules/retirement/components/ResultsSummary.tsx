@@ -5,9 +5,11 @@ import type { RetirementResult } from "@/lib/types/calculator";
 
 interface ResultsSummaryProps {
   result: RetirementResult;
+  showTaxNote?: boolean;
+  taxRate?: number;
 }
 
-export function ResultsSummary({ result }: ResultsSummaryProps) {
+export function ResultsSummary({ result, showTaxNote = false, taxRate = 22 }: ResultsSummaryProps) {
   const isOnTrack = result.annualIncomeAtRetirement >= result.targetSpendingAtRetirement;
 
   const formatCurrency = (amount: number) => {
@@ -15,6 +17,7 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
       style: "currency",
       currency: "USD",
       maximumFractionDigits: 0,
+      useGrouping: true, // Explicitly enable thousand separators (commas)
     }).format(amount);
   };
 
@@ -49,20 +52,18 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
           </motion.div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div className="space-y-3 mb-6">
           <motion.div
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="relative overflow-hidden bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-xl rounded-2xl p-6 border border-blue-300/30 shadow-lg hover:shadow-2xl transition-shadow group"
+            className="relative overflow-hidden bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-xl rounded-2xl border border-blue-300/30 shadow-lg hover:shadow-2xl transition-shadow group"
           >
             <div className="absolute top-0 right-0 w-20 h-20 bg-blue-400/20 rounded-full blur-2xl group-hover:scale-150 transition-transform" />
-            <div className="relative">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">💼</span>
-                <p className="text-sm font-medium text-blue-200">Portfolio at Retirement</p>
-              </div>
-              <p className="text-3xl font-bold text-white">
+            <div className="relative flex flex-col items-center justify-center py-4">
+              <span className="text-3xl mb-2">💼</span>
+              <p className="text-xs font-semibold text-blue-200 mb-2 uppercase tracking-wider text-center">Portfolio at Retirement</p>
+              <p className="text-3xl font-bold text-white text-center">
                 {formatCurrency(result.portfolioAtRetirement)}
               </p>
             </div>
@@ -72,17 +73,20 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.7 }}
-            className="relative overflow-hidden bg-gradient-to-br from-green-500/20 to-emerald-600/10 backdrop-blur-xl rounded-2xl p-6 border border-green-300/30 shadow-lg hover:shadow-2xl transition-shadow group"
+            className="relative overflow-hidden bg-gradient-to-br from-green-500/20 to-emerald-600/10 backdrop-blur-xl rounded-2xl border border-green-300/30 shadow-lg hover:shadow-2xl transition-shadow group"
           >
             <div className="absolute top-0 right-0 w-20 h-20 bg-green-400/20 rounded-full blur-2xl group-hover:scale-150 transition-transform" />
-            <div className="relative">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">💰</span>
-                <p className="text-sm font-medium text-green-200">Annual Income</p>
-              </div>
-              <p className="text-3xl font-bold text-white">
+            <div className="relative flex flex-col items-center justify-center py-4">
+              <span className="text-3xl mb-2">💰</span>
+              <p className="text-xs font-semibold text-green-200 mb-2 uppercase tracking-wider text-center">Annual Income (After-Tax)</p>
+              <p className="text-3xl font-bold text-white text-center">
                 {formatCurrency(result.annualIncomeAtRetirement)}
               </p>
+              {showTaxNote && (
+                <p className="text-[10px] text-green-300/70 mt-2 text-center">
+                  Assumes {taxRate}% tax on withdrawals
+                </p>
+              )}
             </div>
           </motion.div>
 
@@ -90,15 +94,13 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
             initial={{ x: 20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.8 }}
-            className="relative overflow-hidden bg-gradient-to-br from-purple-500/20 to-pink-600/10 backdrop-blur-xl rounded-2xl p-6 border border-purple-300/30 shadow-lg hover:shadow-2xl transition-shadow group"
+            className="relative overflow-hidden bg-gradient-to-br from-purple-500/20 to-pink-600/10 backdrop-blur-xl rounded-2xl border border-purple-300/30 shadow-lg hover:shadow-2xl transition-shadow group"
           >
             <div className="absolute top-0 right-0 w-20 h-20 bg-purple-400/20 rounded-full blur-2xl group-hover:scale-150 transition-transform" />
-            <div className="relative">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">🎯</span>
-                <p className="text-sm font-medium text-purple-200">Target Spending</p>
-              </div>
-              <p className="text-3xl font-bold text-white">
+            <div className="relative flex flex-col items-center justify-center py-4">
+              <span className="text-3xl mb-2">🎯</span>
+              <p className="text-xs font-semibold text-purple-200 mb-2 uppercase tracking-wider text-center">Target Spending</p>
+              <p className="text-3xl font-bold text-white text-center">
                 {formatCurrency(result.targetSpendingAtRetirement)}
               </p>
             </div>
