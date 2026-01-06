@@ -2,7 +2,6 @@
  * Site Configuration - The Master Toggle
  *
  * This file controls which features are visible/active in the app.
- * Edit this file to turn features on/off without touching code.
  */
 
 export type Theme = "purple" | "blue" | "green" | "orange" | "pink" | "monochrome";
@@ -11,48 +10,7 @@ export type FeatureId =
   | "landing"
   | "auth"
   | "billing"
-  | "component-lib"
-  | "ai-studio"
-  | "admin"
-  // Professional Services & CRM
-  | "crm"
-  | "scheduler"
-  // Marketing & Social Proof
-  | "marketing-tools"
-  // Education & Community
-  | "lms"
-  | "community"
-  // Advanced Admin & Operations
-  | "admin-ops"
-  // Fintech & Data Visualization
-  | "fintech"
-  // Creative & Interactive
-  | "effects"
-  // NEW: Priority Showcase Modules
-  | "canvas"
-  | "dashboard-builder"
-  | "workflows"
-  | "api-playground"
-  | "estimator"
-  // Batch 1: Additional Modules
-  | "audit-log"
-  | "2fa-setup"
-  | "notifications"
-  | "export-studio"
-  // Batch 2: More Modules
-  | "documents"
-  | "activity"
-  | "gamification"
-  | "affiliates"
-  // Batch 3: Final Modules
-  | "configurator"
-  | "webhooks"
-  | "editor"
-  | "media"
-  | "product-tour"
-  | "knowledge-base"
-  | "integrations"
-  | "templates";
+  | "retirement";
 
 export interface SiteConfig {
   // App Metadata
@@ -65,8 +23,8 @@ export interface SiteConfig {
 
   // UI Configuration
   theme: Theme;
-  isCatalog: boolean;  // Show sidebar catalog of all modules
-  showAdmin: boolean;  // Hidden admin panel toggle
+  isCatalog: boolean;
+  showAdmin: boolean;
 
   // Social & SEO
   links: {
@@ -78,50 +36,26 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   // App Metadata
-  name: "The Nexus",
-  description: "A production-ready Next.js boilerplate with vertical slice architecture",
-  url: "https://nexus.example.com",
+  name: "RetireRight",
+  description: "Calculate when you can retire with confidence",
+  url: "https://retireright.example.com",
 
   // Feature Flags
-  // Add/remove features from this array to enable/disable them
   activeFeatures: [
-    "landing",      // Hero pages & marketing
-    "auth",         // User authentication
-    "billing",      // Stripe payments
-    "component-lib", // UI component showcase
-    "canvas",       // Collaboration canvas
-    "dashboard-builder", // Dashboard builder
-    "workflows",    // Workflow automation
-    "api-playground", // API playground
-    "estimator",     // App estimator
-    "audit-log",    // Audit log viewer
-    "2fa-setup",    // Two-factor authentication
-    "notifications", // Notification center
-    "export-studio", // Data export studio
-    "documents",    // Document generator
-    "activity",     // Activity feed
-    "gamification", // Gamification system
-    "affiliates",   // Affiliate dashboard
-    // Batch 3: Final Modules
-    "configurator",   // Product configurator
-    "webhooks",       // Webhook manager
-    "editor",         // Rich text editor
-    "media",          // Media library
-    "product-tour",   // Product tour
-    "knowledge-base", // Knowledge base
-    "integrations",   // Integration marketplace
-    "templates"       // Template gallery
+    "retirement",  // Main retirement planner
+    "auth",        // Authentication (ready for production)
+    "billing",     // Stripe payments (ready for production)
+    "landing",     // Landing pages (available but not used in demo)
   ],
 
   // UI Configuration
-  theme: "purple",           // Default color scheme
-  isCatalog: true,           // Set to true to show module catalog sidebar
-  showAdmin: false,          // Toggle admin features on/off
+  theme: "blue",
+  isCatalog: false,  // No catalog mode needed
+  showAdmin: false,
 
   // Social & SEO
   links: {
-    github: "https://github.com/yourusername/nexus",
-    docs: "https://docs.nexus.example.com",
+    github: "https://github.com/yourusername/retireright",
   },
 };
 

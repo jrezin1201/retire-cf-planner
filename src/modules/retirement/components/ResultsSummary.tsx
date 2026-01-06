@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import type { RetirementResult } from "@/lib/types/calculator";
 
 interface ResultsSummaryProps {
@@ -18,47 +19,117 @@ export function ResultsSummary({ result }: ResultsSummaryProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8">
-      <div className="text-center mb-8">
-        <h2 className="text-4xl font-bold text-gray-900 mb-2">
-          You can retire in: {result.retirementYear}
-        </h2>
-        <p className="text-2xl text-gray-600">Age {result.retirementAge}</p>
-      </div>
+    <motion.div
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 0.4 }}
+      className="relative overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 rounded-3xl border border-white/20 shadow-2xl"
+    >
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-teal-500/10" />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-blue-50 rounded-lg p-6">
-          <p className="text-sm font-medium text-blue-600 mb-2">Portfolio at Retirement</p>
-          <p className="text-3xl font-bold text-blue-900">
-            {formatCurrency(result.portfolioAtRetirement)}
-          </p>
+      <div className="relative p-8">
+        <div className="text-center mb-8">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.5, type: "spring" }}
+          >
+            <p className="text-blue-200 text-sm font-medium mb-2 tracking-wide uppercase">
+              Your Retirement Projection
+            </p>
+            <h2 className="text-5xl md:text-6xl font-bold mb-2">
+              <span className="bg-gradient-to-r from-blue-200 via-purple-200 to-teal-200 bg-clip-text text-transparent">
+                {result.retirementYear}
+              </span>
+            </h2>
+            <p className="text-2xl text-blue-100">
+              Age <span className="font-semibold text-white">{result.retirementAge}</span>
+            </p>
+          </motion.div>
         </div>
 
-        <div className="bg-green-50 rounded-lg p-6">
-          <p className="text-sm font-medium text-green-600 mb-2">Annual Income</p>
-          <p className="text-3xl font-bold text-green-900">
-            {formatCurrency(result.annualIncomeAtRetirement)}
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <motion.div
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="relative overflow-hidden bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-xl rounded-2xl p-6 border border-blue-300/30 shadow-lg hover:shadow-2xl transition-shadow group"
+          >
+            <div className="absolute top-0 right-0 w-20 h-20 bg-blue-400/20 rounded-full blur-2xl group-hover:scale-150 transition-transform" />
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">💼</span>
+                <p className="text-sm font-medium text-blue-200">Portfolio at Retirement</p>
+              </div>
+              <p className="text-3xl font-bold text-white">
+                {formatCurrency(result.portfolioAtRetirement)}
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.7 }}
+            className="relative overflow-hidden bg-gradient-to-br from-green-500/20 to-emerald-600/10 backdrop-blur-xl rounded-2xl p-6 border border-green-300/30 shadow-lg hover:shadow-2xl transition-shadow group"
+          >
+            <div className="absolute top-0 right-0 w-20 h-20 bg-green-400/20 rounded-full blur-2xl group-hover:scale-150 transition-transform" />
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">💰</span>
+                <p className="text-sm font-medium text-green-200">Annual Income</p>
+              </div>
+              <p className="text-3xl font-bold text-white">
+                {formatCurrency(result.annualIncomeAtRetirement)}
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ x: 20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="relative overflow-hidden bg-gradient-to-br from-purple-500/20 to-pink-600/10 backdrop-blur-xl rounded-2xl p-6 border border-purple-300/30 shadow-lg hover:shadow-2xl transition-shadow group"
+          >
+            <div className="absolute top-0 right-0 w-20 h-20 bg-purple-400/20 rounded-full blur-2xl group-hover:scale-150 transition-transform" />
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-2xl">🎯</span>
+                <p className="text-sm font-medium text-purple-200">Target Spending</p>
+              </div>
+              <p className="text-3xl font-bold text-white">
+                {formatCurrency(result.targetSpendingAtRetirement)}
+              </p>
+            </div>
+          </motion.div>
         </div>
 
-        <div className="bg-purple-50 rounded-lg p-6">
-          <p className="text-sm font-medium text-purple-600 mb-2">Target Spending</p>
-          <p className="text-3xl font-bold text-purple-900">
-            {formatCurrency(result.targetSpendingAtRetirement)}
-          </p>
-        </div>
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.9 }}
+          className={`relative overflow-hidden rounded-2xl p-6 shadow-xl ${
+            isOnTrack
+              ? "bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-300/40"
+              : "bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-300/40"
+          }`}
+        >
+          <div className="flex items-center justify-center gap-3">
+            <span className="text-3xl">{isOnTrack ? "✅" : "⚠️"}</span>
+            <div className="text-center">
+              <p className={`text-xl font-bold ${isOnTrack ? "text-green-100" : "text-yellow-100"}`}>
+                {isOnTrack ? "You're On Track!" : "Needs Adjustment"}
+              </p>
+              {!isOnTrack && (
+                <p className="text-sm text-yellow-200 mt-1">
+                  Your projected income is below your target spending. Consider adjusting your assumptions or savings.
+                </p>
+              )}
+            </div>
+          </div>
+        </motion.div>
       </div>
-
-      <div className={`mt-6 p-4 rounded-lg ${isOnTrack ? "bg-green-100" : "bg-yellow-100"}`}>
-        <p className={`text-center font-semibold ${isOnTrack ? "text-green-800" : "text-yellow-800"}`}>
-          {isOnTrack ? "✓ On Track!" : "⚠ Needs Adjustment"}
-        </p>
-        {!isOnTrack && (
-          <p className="text-sm text-center text-yellow-700 mt-2">
-            Your projected income is below your target spending. Consider adjusting your assumptions or savings.
-          </p>
-        )}
-      </div>
-    </div>
+    </motion.div>
   );
 }

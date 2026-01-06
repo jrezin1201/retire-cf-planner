@@ -11,7 +11,6 @@ import { ThemeSelector } from "@/components/ui/ThemeSelector";
 import { ParallaxScroll } from "@/components/ui/ParallaxScroll";
 import { HoverCard } from "@/components/ui/HoverCard";
 import { ScrollReveal, CountUp } from "@/components/ui/ScrollReveal";
-import { ComponentShowcase } from "@/components/ComponentShowcase";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 
@@ -412,19 +411,6 @@ export function LandingPage() {
 
         {/* Spacer for parallax */}
         <div className="mb-20" />
-
-        {/* Full Component Gallery */}
-        <ScrollReveal animation="fade" className="mb-12 md:mb-20">
-          <div className="text-center mb-8 md:mb-12 px-4">
-            <h3 className="text-3xl md:text-4xl font-bold text-white mb-3 md:mb-4">
-              Complete Component Library
-            </h3>
-            <p className="text-white/60 text-base md:text-lg max-w-2xl mx-auto">
-              60+ production-ready components across inputs, feedback, navigation, and animations. All built with TypeScript, Framer Motion, and Tailwind CSS.
-            </p>
-          </div>
-          <ComponentShowcase />
-        </ScrollReveal>
 
         {/* Tech Stack */}
         <ScrollReveal animation="fade" delay={0.2}>
